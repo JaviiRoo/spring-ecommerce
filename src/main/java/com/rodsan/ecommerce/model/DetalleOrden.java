@@ -91,5 +91,10 @@ public class DetalleOrden {
 		return "DetalleOrden [id=" + id + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio=" + precio
 				+ ", total=" + total + "]";
 	}
+
+	public void setProducto(Producto producto2) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
