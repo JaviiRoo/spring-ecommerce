@@ -1,6 +1,7 @@
 package com.rodsan.ecommerce.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,8 @@ import com.rodsan.ecommerce.model.DetalleOrden;
 import com.rodsan.ecommerce.model.Orden;
 import com.rodsan.ecommerce.model.Producto;
 import com.rodsan.ecommerce.model.Usuario;
+import com.rodsan.ecommerce.services.IDetalleOrdenService;
+import com.rodsan.ecommerce.services.IOrdenService;
 import com.rodsan.ecommerce.services.IUsuarioService;
 import com.rodsan.ecommerce.services.ProductoService;
 
@@ -33,6 +36,12 @@ public class HomeController {
 	
 	@Autowired
 	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private IOrdenService ordenService;
+	
+	@Autowired
+	private IDetalleOrdenService detalleOrdenService;
 	
 	// Para almacenar los detalles
 	List <DetalleOrden> detalles = new ArrayList <DetalleOrden> ();
@@ -142,5 +151,37 @@ public class HomeController {
 	    return "usuario/resumenorden";
 	}
 
-
+	// Método para guardar la orden
+	
+	@GetMapping("/saveOrder")
+	public String saveOrder () {
+		
+		//Guardar fecha creacion de la orden
+		
+		Date fechaCreacion = new Date();
+		orden.setFechaCreacion(fechaCreacion);
+		orden.setNumero(ordenService.generarNumeroOrden());
+		
+		//Guardar usuario
+		
+		Usuario usuario = usuarioService.findById(1).get();
+		
+		orden.setUsuario(usuario);
+		ordenService.save(orden);
+		
+		//Guardar detalles orden
+		
+		for (DetalleOrden dt:detalles) {
+			dt.setOrden(orden);
+			detalleOrdenService.save(dt);
+		}
+		
+		// Limpieza de valores de la lista orden por si usuario quiere seguir comprando
+		
+		orden = new Orden ();
+		detalles.clear();
+		
+		return "redirect:/";
+	}
+	
 }
