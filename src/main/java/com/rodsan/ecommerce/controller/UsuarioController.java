@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.rodsan.ecommerce.model.Orden;
 import com.rodsan.ecommerce.model.Usuario;
+import com.rodsan.ecommerce.services.IOrdenService;
 import com.rodsan.ecommerce.services.IUsuarioService;
 
 
 import jakarta.servlet.http.HttpSession;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -26,6 +29,9 @@ public class UsuarioController {
 
 	@Autowired
 	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private IOrdenService ordenService;
 	
 	@GetMapping ("/registro")
 	public String create () {
@@ -72,6 +78,12 @@ public class UsuarioController {
 	@GetMapping ("/compras")
 	public String obtenerCompras(Model model, HttpSession session) {
 		model.addAttribute("sesion", session.getAttribute("idusuario"));
+		
+		Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+		List <Orden> ordenes = ordenService.findByUsuario(usuario);
+		
+		model.addAttribute("ordenes", ordenes);
+		
 		return "usuario/compras";
 	}
 }
