@@ -1,6 +1,7 @@
 package com.rodsan.ecommerce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,8 @@ public class UsuarioController {
 	@Autowired
 	private IOrdenService ordenService;
 	
+	BCryptPasswordEncoder passEncoder = new BCryptPasswordEncoder();
+	
 	@GetMapping ("/registro")
 	public String create () {
 		return "usuario/registro";
@@ -44,6 +47,7 @@ public class UsuarioController {
 		
 		logger.info("Usuario registro: {}", usuario);
 		usuario.setTipo("USER");
+		usuario.setPassword(passEncoder.encode(usuario.getPassword()));
 		usuarioService.save(usuario);
 		
 		return "redirect:/";
