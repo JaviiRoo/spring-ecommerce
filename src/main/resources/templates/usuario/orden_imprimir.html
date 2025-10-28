@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Orden ' + ${orden.numero} + ' - MarketPlace'">Orden - MarketPlace</title>
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link th:href="@{/css/usuario/ordenimprimir.css}" rel="stylesheet">
+</head>
+<body>
+  <!-- Floating shapes -->
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
+  <div class="shape shape-4"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container">
+      <a class="logo" th:href="@{/}">
+        <i class="fas fa-store"></i>
+        MarketPlace
+      </a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+			  <a class="nav-link nav-link-custom" th:href="@{/usuario/perfil}">
+			    <i class="fas fa-user me-1"></i> Mi Perfil
+			  </a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link nav-link-custom" th:href="@{/usuario/compras}">
+			    <i class="fas fa-shopping-bag me-1"></i> Mis Pedidos
+			  </a>
+			</li>
+        </ul>
+      </div>    
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="order-container">
+    <div class="order-wrapper">
+      <div class="order-card">
+        <!-- Order Header -->
+        <div class="order-header">
+          <div class="order-icon">
+            <i class="fas fa-receipt"></i>
+          </div>
+          <div class="order-title-section">
+            <h1>Detalles de la Orden</h1>
+            <p class="order-subtitle">Número de orden: <span th:text="${orden.numero}" class="order-number"></span></p>
+          </div>
+          <div class="order-status">
+            <span class="status-badge status-completed">
+              <i class="fas fa-check-circle me-1"></i>
+              Completada
+            </span>
+          </div>
+        </div>
+
+        <!-- Order Info -->
+        <div class="order-info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="info-content">
+              <label>Fecha de Creación</label>
+              <p th:text="${orden.fechaCreacion}" class="info-value"></p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="info-content">
+              <label>Cliente</label>
+              <p th:text="${orden.usuario.nombre}" class="info-value"></p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div class="info-content">
+              <label>Total de la Orden</label>
+              <p th:text="${'€ ' + orden.total}" class="info-value total-amount"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="order-items-section">
+          <div class="section-header">
+            <i class="fas fa-boxes me-2"></i>
+            <h3>Productos en la Orden</h3>
+          </div>
+          
+          <div class="items-table">
+            <div class="table-header">
+              <div class="col-product">Producto</div>
+              <div class="col-quantity">Cantidad</div>
+              <div class="col-price">Precio Unitario</div>
+              <div class="col-total">Total</div>
+            </div>
+            
+            <div class="table-body">
+              <div th:each="detalle : ${detalles}" class="table-row">
+                <div class="col-product">
+                  <div class="product-info">
+                    <div class="product-name" th:text="${detalle.producto.nombre}"></div>
+                    <div class="product-category">Producto</div>
+                  </div>
+                </div>
+                <div class="col-quantity">
+                  <span class="quantity-badge" th:text="${detalle.cantidad}"></span>
+                </div>
+                <div class="col-price" th:text="${'€ ' + detalle.precio}"></div>
+                <div class="col-total" th:text="${'€ ' + detalle.total}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <div class="summary-card">
+            <div class="summary-header">
+              <i class="fas fa-calculator me-2"></i>
+              <h4>Resumen del Pedido</h4>
+            </div>
+            <div class="summary-content">
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span th:text="${'€ ' + orden.total}"></span>
+              </div>
+              <div class="summary-row">
+                <span>Envío:</span>
+                <span>Gratis</span>
+              </div>
+              <div class="summary-row discount">
+                <span>Descuento:</span>
+                <span>- €0.00</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-row total">
+                <span>Total:</span>
+                <span th:text="${'€ ' + orden.total}" class="final-total"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-secondary" onclick="window.history.back()">
+            <i class="fas fa-arrow-left me-2"></i>
+            Volver Atrás
+          </button>
+          <button class="btn-primary" onclick="window.print()">
+            <i class="fas fa-print me-2"></i>
+            Imprimir Orden
+          </button>
+        </div>
+
+        <!-- Order Timeline -->
+        <div class="order-timeline">
+          <div class="timeline-header">
+            <i class="fas fa-history me-2"></i>
+            <h4>Historial de la Orden</h4>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item completed">
+              <div class="timeline-marker">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="timeline-content">
+                <h5>Orden Creada</h5>
+                <p th:text="${orden.fechaCreacion}"></p>
+              </div>
+            </div>
+            <div class="timeline-item completed">
+              <div class="timeline-marker">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="timeline-content">
+                <h5>Pago Confirmado</h5>
+                <p th:text="${orden.fechaCreacion}"></p>
+              </div>
+            </div>
+            <div class="timeline-item completed">
+              <div class="timeline-marker">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="timeline-content">
+                <h5>Orden Enviada</h5>
+                <p th:text="${orden.fechaCreacion}"></p>
+              </div>
+            </div>
+            <div class="timeline-item current">
+              <div class="timeline-marker">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="timeline-content">
+                <h5>Entregada</h5>
+                <p>Orden completada y entregada</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-custom">
+    <div class="container text-center">
+      <p>&copy; 2025 MarketPlace. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add print functionality with better styling
+      const printBtn = document.querySelector('.btn-primary');
+      printBtn.addEventListener('click', function() {
+        // Add loading state
+        const originalText = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Preparando impresión...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          window.print();
+          this.innerHTML = originalText;
+          this.disabled = false;
+        }, 1000);
+      });
+
+      // Add animation to elements
+      const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.table-row, .info-card, .summary-card');
+        elements.forEach((element, index) => {
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+          
+          if (elementTop < window.innerHeight - elementVisible) {
+            element.style.animationDelay = `${index * 0.1}s`;
+            element.classList.add('animate-in');
+          }
+        });
+      };
+
+      // Initial animation
+      setTimeout(animateOnScroll, 500);
+      
+      // Animate on scroll
+      window.addEventListener('scroll', animateOnScroll);
+    });
+  </script>
+</body>
+</html>

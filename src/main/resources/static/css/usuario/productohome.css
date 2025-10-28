@@ -30,14 +30,19 @@
      line-height: 1.6;
    }
    
-   /* Page Header */
    .page-header {
      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
      color: white;
-     padding: 3rem 0 4rem;
      position: relative;
      overflow: hidden;
+     margin-top: 0; /* Quitamos espacio blanco */
+     padding: 3.5rem 0 1.5rem; /* Ajuste visual coherente */
    }
+
+   body {
+     padding-top: 80px; /* Mantiene la posición correcta bajo el header */
+   }
+
    
    .page-header::before {
      content: '';

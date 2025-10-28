@@ -1,80 +1,189 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
-  <title>Spring eCommerce</title>
-
+  <title>Detalle de Orden - Admin MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
-     <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/administrador/detalleorden.css}" rel="stylesheet">
+  <link th:href="@{/css/administrador/template_admin.css}" rel="stylesheet">
 
-     <!-- Custom styles for this template -->
-     <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
 </head>
 
 <body>
-
   <!-- Navigation -->
-  	<div th:include="administrador/template_admin.html::header"></div>
+  <div th:replace="administrador/template_admin.html::header"></div>
 
-    <!-- Page Content -->
-    <div class="container">
-
-
-      <!-- Page Heading/Breadcrumbs -->
-      <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Detalles</small>
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">
+        <span>📋</span>
+        <span>Detalle de Orden</span>
+        <span class="order-badge">#<span th:text="${orden.numero}">12345</span></span>
       </h1>
+      <p class="page-subtitle">Información completa de la orden de compra</p>
+    </div>
 
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item"><a href="compras.html">Compras</a></li>
-        <li class="breadcrumb-item active">Detalle de Compra</li>
-      </ol>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-custom">
+      <div class="breadcrumb-item">
+        <a href="/admin">🏠 Home</a>
+      </div>
+      <div class="breadcrumb-item">
+        <a href="/administrador/ordenes">📦 Órdenes</a>
+      </div>
+      <div class="breadcrumb-item active">Detalle</div>
+    </nav>
 
-      <!-- Blog Post -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="row">
-           <div class="col-lg-12">
-            <table class="table">
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <a href="/administrador/ordenes" class="btn-back">
+        ← Volver a Órdenes
+      </a>
+      <div class="action-buttons">
+        <button class="btn-action btn-print" onclick="window.print()">
+          🖨️ Imprimir
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Order Info Cards -->
+        <div class="order-info-grid">
+          <div class="info-card">
+            <div class="info-icon-wrapper">📦</div>
+            <div class="info-label">Número de Orden</div>
+            <div class="info-value" th:text="'#' + ${orden.numero}">#12345</div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon-wrapper">📅</div>
+            <div class="info-label">Fecha</div>
+            <div class="info-value" th:text="${orden.fechaCreacion}">01/01/2024</div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon-wrapper">✓</div>
+            <div class="info-label">Estado</div>
+            <div class="info-value" style="color: var(--success);">Completada</div>
+          </div>
+        </div>
+
+        <!-- Details Card -->
+        <div class="details-card">
+          <div class="details-header">
+            <div class="details-header-icon">🛍️</div>
+            <h2>Productos de la Orden</h2>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="details-table">
               <thead>
                 <tr>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Producto</th>                  
-                  <th scope="col">Precio</th>
-                  <th scope="col">Total</th>                  
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Total</th>
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="detalle:${detalles}">
-                  <td th:text="${detalle.cantidad}"></td>
-                  <td th:text="${detalle.nombre}"></td>
-                  <td th:text="${detalle.precio}"></td>
-                  <td th:text="${detalle.total}"></td>
+                <tr th:each="detalle:${detalles}" class="detail-row">
+                  <td>
+                    <div class="product-info">
+                      <img src="https://via.placeholder.com/60" alt="Producto" class="product-image">
+                      <div class="product-name" th:text="${detalle.nombre}">Producto</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="quantity-badge" th:text="${detalle.cantidad}">2</div>
+                  </td>
+                  <td>
+                    <div class="price-cell" th:text="'$' + ${detalle.precio}">$50.00</div>
+                  </td>
+                  <td>
+                    <div class="total-cell" th:text="'$' + ${detalle.total}">$100.00</div>
+                  </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <div class="summary-section">
+            <div class="summary-rows">
+              <div class="summary-row">
+                <span class="summary-label">Subtotal</span>
+                <span class="summary-value" th:text="'$' + ${orden.total}">$250.00</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Envío</span>
+                <span class="summary-value" style="color: var(--success);">GRATIS</span>
+              </div>
+              <div class="summary-row">
+                <span class="summary-label">Descuentos</span>
+                <span class="summary-value">$0.00</span>
+              </div>
+              <div class="summary-row">
+                <span class="grand-total-label">Total</span>
+                <span class="grand-total-value" th:text="'$' + ${orden.total}">$250.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <!-- Timeline Card -->
+        <div class="timeline-card">
+          <div class="timeline-header">
+            <div class="timeline-icon">🚚</div>
+            <h3>Estado de la Orden</h3>
+          </div>
+          <div class="timeline-items">
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Orden Confirmada</div>
+                <div class="timeline-date" th:text="${orden.fechaCreacion}">Hoy 10:30 AM</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">En Preparación</div>
+                <div class="timeline-date">Hoy 11:00 AM</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Enviado</div>
+                <div class="timeline-date">Hoy 2:00 PM</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Entregado</div>
+                <div class="timeline-date">Completado</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- /.container -->
 
   <!-- Footer -->
-    	<div th:include="administrador/template_admin.html::footer"></div>
+  <div th:replace="administrador/template_admin.html::footer"></div>
 
-       <!-- Bootstrap core JavaScript -->
-       <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-       <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
-
 </html>

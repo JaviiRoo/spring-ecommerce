@@ -1,46 +1,120 @@
-  <!-- Navigation -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Administrador - MarketPlace</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap -->
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/css/administrador/template_admin.css}" rel="stylesheet">
+</head>
+
+<body class="admin-layout">
+
+  <!-- ✅ HEADER -->
   <div th:fragment="header">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-	    <div class="container">
-	      <a class="navbar-brand" th:href="@{/administrador}">Comercio Digital</a>
+    <nav class="navbar navbar-expand-lg navbar-dark admin-navbar fixed-top">
+      <div class="container">
+        <!-- Logo / Brand -->
+        <a class="navbar-brand" th:href="@{/administrador}">
+          <span class="logo-icon">⚙️</span>
+          <span>MarketPlace Admin</span>
+        </a>
 
-	      <form class="form-inline my-2 my-lg-0" method="post"
-	      action="#">
-	      <input class="form-control mr-sm-2" type="search"
-	      placeholder="Buscar" aria-label="Search" name="nombre"
-	      autocomplete="off">
-	      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-	    </form>
+        <!-- Search bar -->
+        <form class="d-none d-md-flex search-form" th:action="@{/productos/search}" method="post">
+          <button class="btn-search" type="submit">🔍</button>
+          <input class="search-input" type="search" placeholder="Buscar productos..." aria-label="Buscar" name="nombre" autocomplete="off">
+        </form>
 
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+		
+        <!-- Menu -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarAdmin">
+          <ul class="navbar-nav align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/administrador}">
+                🏠 Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/productos}">
+                📦 Productos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/administrador/usuarios}">
+                👥 Usuarios
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/administrador/ordenes}">
+                💰 Órdenes
+              </a>
+            </li>
 
-	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse" id="navbarResponsive">
-	      <ul class="navbar-nav ml-auto">
-			<li class="nav-item dropdown"><a
-					class="nav-Link dropdown-toggle" href="#"
-					id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-					aria-haspopup="true" aria-expanded="false">ADMIN</a>
-					
-					<div class="dropdown-menu"
-						aria-labelledby="navbarDropdownMenuLink">
-						<a class="dropdown-item" th:href="@{/productos}">Productos</a>
-						<a class="dropdown-item" th:href="@{/administrador/usuarios}">Usuarios</a>
-						<a class="dropdown-item" th:href="@{/administrador/ordenes}">Ordenes</a>
-						<a class="dropdown-item" th:href="@{/usuario/cerrar}">Salir</a>
-					</div></li>
-	          </ul>
-	        </div>
-	      </div>
+            <!-- Dropdown perfil -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle admin-name" href="#" id="adminMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                👤 Administrador
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="adminMenu">
+                <a class="dropdown-item" th:href="@{/usuario/perfil}">
+                  ⚙️ Mi Perfil
+                </a>
+                <a class="dropdown-item" href="#">
+                  📊 Estadísticas
+                </a>
+                <a class="dropdown-item" href="#">
+                  🔔 Notificaciones
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" th:href="@{/usuario/cerrar}">
+                  🚪 Cerrar Sesión
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-	</div>
+  </div>
 
-    <!-- Footer -->
-	<div th:fragment="footer">
-		<footer class="py-5 bg-dark">
-		      <div class="container">
-		        <p class="m-0 text-center text-white">Copyright &copy; Spring eCommerce 2021</p>
-		      </div>
-		      <!-- /.container -->
-		    </footer>
+  <!-- ✅ FOOTER -->
+  <div th:fragment="footer">
+    <footer class="admin-footer">
+      <div class="container">
+        <div class="text-center">
+          <p>© <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> MarketPlace - Panel de Administración</p>
+          <small>Desarrollado con ❤️ usando Spring Boot & Thymeleaf</small>
+          <div class="footer-badge">
+            ⚡ Version 2.0
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- JS -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  
+  <script>
+    // Active link highlighting
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname;
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') && currentPath.includes(link.getAttribute('href'))) {
+          link.parentElement.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -32,14 +32,21 @@
       line-height: 1.6;
     }
     
-    /* Page Header */
-    .page-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-      padding: 3rem 0 4rem;
-      position: relative;
-      overflow: hidden;
-    }
+	/* Page Header */
+	.page-header {
+	  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+	  color: white;
+	  position: relative;
+	  overflow: hidden;
+	  margin-top: 0; /* Eliminamos hueco duplicado con el header */
+	  padding: 3.5rem 0 1.5rem; /* Altura más equilibrada */
+	}
+
+	/* Ajuste global para compensar header fijo */
+	body {
+	  padding-top: 80px; /* Mantiene el contenido visible justo bajo el header */
+	}
+
     
     .page-header::before {
       content: '';

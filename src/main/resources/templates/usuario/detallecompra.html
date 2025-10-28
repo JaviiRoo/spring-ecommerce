@@ -11,6 +11,7 @@
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles -->
   <link th:href="@{/css/usuario/detallecompra.css}" rel="stylesheet">
+  <link th:href="@{/css/usuario/template_usuario.css}" rel="stylesheet">
 
 </head>
 
@@ -26,13 +27,6 @@
         <span>📋</span>
         <span>Detalle de Compra</span>
       </h1>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
-          <li class="breadcrumb-item"><a th:href="@{/usuario/compras}">Mis Compras</a></li>
-          <li class="breadcrumb-item active">Detalle</li>
-        </ol>
-      </nav>
     </div>
   </div>
 
@@ -126,7 +120,7 @@
                     </td>
                     <td>
                       <div class="product-info">
-                        <img src="https://via.placeholder.com/80" alt="Producto" class="product-image">
+						<img th:src="@{/images/{img} (img=${detalle.producto.imagen})}" alt="Producto" class="product-image">
                         <div class="product-details">
                           <div class="product-name" th:text="${detalle.nombre}">Producto</div>
                           <div class="product-description">Descripción del producto</div>
@@ -174,13 +168,15 @@
             </div>
           </div>
           
-          <div class="order-actions">
-            <button class="btn-action btn-print">
-              🖨️ Imprimir
-            </button>
-            <button class="btn-action btn-download">
-              📥 Descargar
-            </button>
+		  <div class="order-actions">
+		      <a th:href="@{'/usuario/orden/' + ${orden.id} + '/imprimir'}" class="btn-action btn-print">
+		          🖨️ Imprimir
+		      </a>
+		      <a th:href="@{'/usuario/orden/' + ${orden.id} + '/descargar'}" class="btn-action btn-download">
+		          📥 Descargar
+		      </a>
+		  </div>
+
           </div>
         </div>
       </div>

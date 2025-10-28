@@ -11,12 +11,13 @@
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link th:href="@{/css/productos/show.css}" rel="stylesheet">
+  <link th:href="@{/css/administrador/template_admin.css}" rel="stylesheet">
 
 </head>
 
 <body>
   <!-- Navigation -->
-  <div th:include="administrador/template_admin.html::header"></div>
+  <div th:replace="administrador/template_admin.html::header"></div>
 
   <!-- Page Content -->
   <div class="container">
@@ -30,15 +31,7 @@
         <p class="page-subtitle">Administra el catálogo completo de productos de MarketPlace</p>
       </div>
     </div>
-
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb-custom">
-      <div class="breadcrumb-item">
-        <a href="/admin">🏠 Home</a>
-      </div>
-      <div class="breadcrumb-item active">Productos</div>
-    </nav>
-
+    
     <!-- Stats Grid -->
     <div class="stats-grid">
       <div class="stat-card">
@@ -149,7 +142,7 @@
   </div>
 
   <!-- Footer -->
-  <div th:include="administrador/template_admin.html::footer"></div>
+  <div th:replace="administrador/template_admin.html::footer"></div>
 
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>

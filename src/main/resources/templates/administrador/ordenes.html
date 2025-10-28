@@ -10,7 +10,8 @@
   <!-- Bootstrap core CSS -->
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link th:href="@{/css/administrador/usuarios.css}" rel="stylesheet">
+  <link th:href="@{/css/administrador/ordenes.css}" rel="stylesheet">
+  <link th:href="@{/css/administrador/template_admin.css}" rel="stylesheet">
 
   <style>
     
@@ -19,7 +20,7 @@
 
 <body>
   <!-- Navigation -->
-  <div th:include="administrador/template_admin.html::header"></div>
+  <div th:replace="administrador/template_admin.html::header"></div>
 
   <!-- Page Content -->
   <div class="container">
@@ -32,13 +33,6 @@
       <p class="page-subtitle">Administra todas las órdenes de compra del sistema</p>
     </div>
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb-custom">
-      <div class="breadcrumb-item">
-        <a th:href="@{/admin}">🏠 Home</a>
-      </div>
-      <div class="breadcrumb-item active">Órdenes</div>
-    </nav>
 
     <!-- Stats Grid -->
     <div class="stats-grid">
@@ -160,7 +154,7 @@
   </div>
 
   <!-- Footer -->
-  <div th:include="administrador/template_admin.html::footer"></div>
+  <div th:replace="administrador/template_admin.html::footer"></div>
 
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>

@@ -11,6 +11,7 @@
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link th:href="@{/css/usuario/resumenorden.css}" rel="stylesheet">
+  <link th:href="@{/css/usuario/template_usuario.css}" rel="stylesheet">
 
 </head>
 
@@ -25,12 +26,6 @@
         <span>📋</span>
         <span>Resumen de la Orden</span>
       </h1>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
-          <li class="breadcrumb-item active">Resumen de Orden</li>
-        </ol>
-      </nav>
     </div>
   </div>
 
@@ -103,7 +98,7 @@
                   <tr th:each="dorden : ${cart}" class="product-item">
                     <td>
                       <div class="product-info">
-                        <img src="https://via.placeholder.com/60" alt="Producto" class="product-image">
+						<img th:src="@{/images/{img} (img=${dorden.producto.imagen})}" alt="Producto" class="product-image">
                         <div class="product-name" th:text="${dorden.nombre}">Producto</div>
                       </div>
                     </td>

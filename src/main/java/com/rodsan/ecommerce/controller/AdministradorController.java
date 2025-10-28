@@ -58,13 +58,21 @@ public class AdministradorController {
 	
 	@GetMapping("/detalle/{id}")
 	public String detalle(Model model, @PathVariable Integer id) {
-		
-		logg.info("Id de la orden: {}", id);
-		Orden orden = ordenService.findById(id).get();
-		
-		model.addAttribute("detalles", orden.getDetalle());
-		
-		return "administrador/detalleorden";
-		
+	    logg.info("Id de la orden: {}", id);
+	    
+	    Orden orden = ordenService.findById(id).orElse(null);
+
+	    if (orden == null) {
+	        logg.error("No se encontró la orden con id {}", id);
+	        model.addAttribute("error", "No se encontró la orden solicitada.");
+	        return "administrador/error"; // o redirige a una página de error si prefieres
+	    }
+
+	    // ✅ Agregar tanto la orden como los detalles al modelo
+	    model.addAttribute("orden", orden);
+	    model.addAttribute("detalles", orden.getDetalle());
+
+	    return "administrador/detalleorden";
 	}
+
 }

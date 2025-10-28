@@ -1,135 +1,218 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <style>
-        :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4cc9f0;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4bb543;
-            --danger-color: #e63946;
-            --text-color: #333;
-            --text-light: #6c757d;
-            --border-color: #e1e5eb;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MarketPlace</title>
+
+  <!-- Bootstrap -->
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/usuario/template_usuario.css}" rel="stylesheet">
+
 </head>
+
 <body>
 
-<!-- Header para usuarios no logueados -->
-<div th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: var(--shadow);">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/}" style="font-weight: 700; font-size: 1.5rem;">MarketPlace</a>
+  <!-- Header para usuarios NO logueados -->
+  <div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom">
+      <div class="container">
+        <a class="logo" th:href="@{/}">MarketPlace</a>
 
-            <form class="form-inline my-2 my-lg-0 mr-3" method="post" th:action="@{/search}">
-                <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Buscar productos..." aria-label="Search"
-                        name="nombre" autocomplete="off" style="border-radius: 8px 0 0 8px; border: none;">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-light" type="submit" style="border-radius: 0 8px 8px 0;">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+        <form class="form-inline search-form" method="post" th:action="@{/search}">
+          <div class="search-input-group">
+            <input class="search-input" type="search" placeholder="Buscar productos increíbles..." 
+                   name="nombre" autocomplete="off">
+            <button class="search-btn" type="submit">🔍</button>
+          </div>
+        </form>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/getCart}" 
-                           style="border-radius: 6px; padding: 8px 16px; transition: var(--transition);">
-                            <i class="fas fa-shopping-cart"></i> Carrito
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/usuario/login}" 
-                           style="border-radius: 6px; padding: 8px 16px; transition: var(--transition);">
-                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" th:href="@{/usuario/login}">
+                🛒 Iniciar sesión
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-custom" th:href="@{/usuario/registro}">
+                🔐 Regístrate
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
-</div>
+  </div>
 
-<!-- Header para usuarios logueados -->
-<div th:fragment="header-user">
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: var(--shadow);">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/}" style="font-weight: 700; font-size: 1.5rem;">MarketPlace</a>
+  <!-- Header para usuarios LOGUEADOS -->
+  <div th:fragment="header-user">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom">
+      <div class="container">
+        <a class="logo" th:href="@{/}">MarketPlace</a>
 
-            <form class="form-inline my-2 my-lg-0 mr-3" method="post" th:action="@{/search}">
-                <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Buscar productos..." aria-label="Search"
-                        name="nombre" autocomplete="off" style="border-radius: 8px 0 0 8px; border: none;">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-light" type="submit" style="border-radius: 0 8px 8px 0;">
-                            <i class="fas fa-search"></i>
-                        </button>
+        <form class="form-inline search-form" method="post" th:action="@{/search}">
+          <div class="search-input-group">
+            <input class="search-input" type="search" placeholder="Buscar productos increíbles..." 
+                   name="nombre" autocomplete="off">
+            <button class="search-btn" type="submit">🔍</button>
+          </div>
+        </form>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown user-dropdown">
+              <a class="nav-link dropdown-toggle user-dropdown-toggle" href="#" id="navbarDropdownMenuLink" 
+                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="user-icon">👤</div>
+                <span>Mi Cuenta</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right dropdown-menu-custom" 
+                   aria-labelledby="navbarDropdownMenuLink">
+                <!-- Header -->
+                <div class="dropdown-header-custom">
+                  <i class="fas fa-user-cog"></i>
+                  <span>Gestión de Cuenta</span>
+                </div>
+                
+                <div class="dropdown-body">
+                  <!-- Perfil -->
+                  <a class="dropdown-item dropdown-item-custom dropdown-item-profile" th:href="@{/usuario/perfil}">
+                    <div class="dropdown-item-icon">
+                      <i class="fas fa-user-edit"></i>
                     </div>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Mi Perfil</div>
+                      <div class="dropdown-item-subtitle">Gestiona tu información</div>
+                    </div>
+                  </a>
+
+                  <!-- Compras -->
+                  <a class="dropdown-item dropdown-item-custom dropdown-item-purchases" th:href="@{/usuario/compras}">
+                    <div class="dropdown-item-icon">
+                      <i class="fas fa-box-open"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Mis Compras</div>
+                      <div class="dropdown-item-subtitle">Historial de pedidos</div>
+                    </div>
+                  </a>
+                  
+                  <!-- Carrito -->
+                  <a class="dropdown-item dropdown-item-custom dropdown-item-cart" th:href="@{/getCart}">
+                    <div class="dropdown-item-icon">
+                      <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Mi Carrito</div>
+                      <div class="dropdown-item-subtitle">Productos seleccionados</div>
+                    </div>
+                    <span class="cart-badge" th:if="${session.cart != null and !session.cart.empty}" 
+                          th:text="${session.cart.size()}">3</span>
+                  </a>
+
+                  <div class="dropdown-divider"></div>
+
+                  <!-- Cerrar Sesión -->
+                  <a class="dropdown-item dropdown-item-custom dropdown-item-danger" th:href="@{/usuario/cerrar}">
+                    <div class="dropdown-item-icon">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Cerrar Sesión</div>
+                      <div class="dropdown-item-subtitle">Salir de la cuenta</div>
+                    </div>
+                  </a>
                 </div>
-            </form>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
-                            style="border-radius: 6px; padding: 8px 16px; transition: var(--transition);">
-                            <i class="fas fa-user-circle mr-2" style="font-size: 1.2rem;"></i>
-                            Mi Cuenta
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" 
-                             style="border-radius: 8px; border: none; box-shadow: var(--shadow);">
-                            <a class="dropdown-item" th:href="@{/usuario/compras}">
-                                <i class="fas fa-shopping-bag mr-2"></i> Mis Compras
-                            </a>
-                            <a class="dropdown-item" th:href="@{/getCart}">
-                                <i class="fas fa-shopping-cart mr-2"></i> Carrito
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" th:href="@{/usuario/cerrar}">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+              </div>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
-</div>
+  </div>
 
-<!-- Footer -->
-<div th:fragment="footer">
-    <footer class="py-4" style="background: linear-gradient(135deg, var(--dark-color), #000);">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="m-0 text-white" style="font-weight: 600;">MarketPlace - Tu tienda online de confianza</p>
-                </div>
-                <div class="col-md-6 text-md-right">
-                    <p class="m-0 text-white-50">&copy; 2025 MarketPlace. Todos los derechos reservados.</p>
-                </div>
+  <!-- Footer -->
+  <div th:fragment="footer">
+    <footer class="footer-custom">
+      <div class="container">
+        <div class="footer-content">
+          <!-- About Section -->
+          <div class="footer-section">
+            <h4>🛍️ MarketPlace</h4>
+            <p class="footer-description">
+              Tu tienda online de confianza. Ofrecemos los mejores productos con la mejor calidad 
+              y servicio al cliente excepcional.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-icon" title="Facebook">📘</a>
+              <a href="#" class="social-icon" title="Instagram">📷</a>
+              <a href="#" class="social-icon" title="Twitter">🐦</a>
+              <a href="#" class="social-icon" title="YouTube">📹</a>
             </div>
+          </div>
+          
+          <!-- Quick Links -->
+          <div class="footer-section">
+            <h4>Enlaces Rápidos</h4>
+            <ul class="footer-links">
+              <li><a th:href="@{/}">Inicio</a></li>
+              <li><a th:href="@{/productos}">Productos</a></li>
+              <li><a th:href="@{/usuario/compras}">Mis Compras</a></li>
+              <li><a th:href="@{/getCart}">Carrito</a></li>
+            </ul>
+          </div>
+          
+          <!-- Help Section -->
+          <div class="footer-section">
+            <h4>Ayuda</h4>
+            <ul class="footer-links">
+              <li><a href="#">Preguntas Frecuentes</a></li>
+              <li><a href="#">Política de Devolución</a></li>
+              <li><a href="#">Envíos y Entregas</a></li>
+              <li><a href="#">Contáctanos</a></li>
+            </ul>
+          </div>
+          
+          <!-- Contact Section -->
+          <div class="footer-section">
+            <h4>Contacto</h4>
+            <ul class="footer-links">
+              <li><a href="mailto:info@marketplace.com">📧 info@marketplace.com</a></li>
+              <li><a href="tel:+1234567890">📞 +123 456 7890</a></li>
+              <li><a href="#">📍 Calle Principal 123</a></li>
+              <li><a href="#">⏰ Lun-Vie: 9:00-18:00</a></li>
+            </ul>
+          </div>
         </div>
+        
+        <div class="footer-bottom">
+          <p class="footer-copyright">
+            © 2025 MarketPlace. Todos los derechos reservados.
+          </p>
+          <div class="footer-badges">
+            <span class="footer-badge">🔒 Pago Seguro</span>
+            <span class="footer-badge">🚚 Envío Gratis</span>
+            <span class="footer-badge">✓ Garantía Total</span>
+          </div>
+        </div>
+      </div>
     </footer>
-</div>
+  </div>
 
+  <!-- Scripts -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
