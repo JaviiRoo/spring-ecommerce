@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Spring eCommerce</title>
+  <title>Detalle de Compra - MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles -->
-  <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <link th:href="@{/css/usuario/detallecompra.css}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -19,42 +19,168 @@
   <div th:insert="~{usuario/template_usuario.html::header}" th:if="${sesion==null}"></div>
   <div th:insert="~{usuario/template_usuario.html::header-user}" th:unless="${sesion==null}"></div>
 
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">
+        <span>📋</span>
+        <span>Detalle de Compra</span>
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+          <li class="breadcrumb-item"><a th:href="@{/usuario/compras}">Mis Compras</a></li>
+          <li class="breadcrumb-item active">Detalle</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
   <!-- Page Content -->
-  <div class="container">
-    <h1 class="mt-4 mb-3">Spring eCommerce <small>Detalles de Compra</small></h1>
+  <div class="container main-container">
+    <!-- Order Info Card -->
+    <div class="order-info-card">
+      <div class="info-item">
+        <div class="info-icon">📦</div>
+        <span class="info-label">Número de Orden</span>
+        <span class="info-value" th:text="${orden.numero}">#12345</span>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">📅</div>
+        <span class="info-label">Fecha de Compra</span>
+        <span class="info-value" th:text="${orden.fechaCreacion}">01/01/2024</span>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">✓</div>
+        <span class="info-label">Estado</span>
+        <span class="info-value" style="color: var(--success);">Completado</span>
+      </div>
+    </div>
 
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-      <li class="breadcrumb-item"><a th:href="@{/usuario/compras}">Compras</a></li>
-      <li class="breadcrumb-item active">Detalle de Compra</li>
-    </ol>
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Status Timeline -->
+        <div class="status-timeline">
+          <div class="timeline-header">
+            <div class="timeline-icon">🚚</div>
+            <h3>Estado del Pedido</h3>
+          </div>
+          <div class="timeline-items">
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Pedido Confirmado</div>
+                <div class="timeline-date" th:text="${orden.fechaCreacion}">Hoy a las 10:30 AM</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">En Preparación</div>
+                <div class="timeline-date">Hoy a las 11:00 AM</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Enviado</div>
+                <div class="timeline-date">Hoy a las 2:00 PM</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-marker">✓</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Entregado</div>
+                <div class="timeline-date">Completado</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-lg-12">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Precio</th>
-                  <th scope="col">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="detalle:${detalles}">
-                  <td th:text="${detalle.cantidad}"></td>
-                  <td th:text="${detalle.nombre}"></td>
-                  <td th:text="${detalle.precio}"></td>
-                  <td th:text="${detalle.total}"></td>
-                </tr>
-              </tbody>
-            </table>
+        <!-- Detail Card -->
+        <div class="detail-card">
+          <div class="detail-header">
+            <div class="detail-header-left">
+              <div class="detail-header-icon">🛍️</div>
+              <h3>Productos del Pedido</h3>
+            </div>
+            <a th:href="@{/usuario/compras}" class="back-btn">
+              ← Volver a Compras
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="detail-table">
+                <thead>
+                  <tr>
+                    <th>Cantidad</th>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="detalle:${detalles}" class="detail-item">
+                    <td>
+                      <div class="product-quantity" th:text="${detalle.cantidad}">2</div>
+                    </td>
+                    <td>
+                      <div class="product-info">
+                        <img src="https://via.placeholder.com/80" alt="Producto" class="product-image">
+                        <div class="product-details">
+                          <div class="product-name" th:text="${detalle.nombre}">Producto</div>
+                          <div class="product-description">Descripción del producto</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="product-price" th:text="'€' + ${detalle.precio}">$50.00</div>
+                    </td>
+                    <td>
+                      <div class="product-total" th:text="'€' + ${detalle.total}">$100.00</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <h3 class="mt-3">Total de la Orden: 
-              <span th:text="${orden.total}"></span>
-            </h3>
+      <div class="col-lg-4">
+        <!-- Order Total Section -->
+        <div class="order-total-section">
+          <div class="total-header">
+            <div class="total-icon">💰</div>
+            <h3>Resumen</h3>
+          </div>
+          
+          <div class="total-breakdown">
+            <div class="total-row">
+              <span class="total-label">Subtotal</span>
+              <span class="total-value" th:text="'€' + ${orden.total}">$250.00</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">Envío</span>
+              <span class="total-value" style="color: var(--success);">GRATIS</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">Descuentos</span>
+              <span class="total-value">€0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="grand-total-label">Total</span>
+              <span class="grand-total-value" th:text="'€' + ${orden.total}">$250.00</span>
+            </div>
+          </div>
+          
+          <div class="order-actions">
+            <button class="btn-action btn-print">
+              🖨️ Imprimir
+            </button>
+            <button class="btn-action btn-download">
+              📥 Descargar
+            </button>
           </div>
         </div>
       </div>
@@ -68,5 +194,4 @@
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
-
 </html>

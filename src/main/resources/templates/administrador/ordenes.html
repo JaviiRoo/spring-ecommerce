@@ -1,80 +1,191 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
-  <title>Spring eCommerce</title>
-
+  <title>Órdenes - Admin MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
-   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/administrador/usuarios.css}" rel="stylesheet">
 
-   <!-- Custom styles for this template -->
-   <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
-
+  <style>
+    
+  </style>
 </head>
 
 <body>
+  <!-- Navigation -->
+  <div th:include="administrador/template_admin.html::header"></div>
 
-	<!-- Navigation -->
-	<div th:include="administrador/template_admin.html::header"></div>
-
-    <!-- Page Content -->
-    <div class="container">
-
-
-      <!-- Page Heading/Breadcrumbs -->
-      <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Ordenes</small>
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>
+        <span>📦</span>
+        <span>Gestión de Órdenes</span>
       </h1>
+      <p class="page-subtitle">Administra todas las órdenes de compra del sistema</p>
+    </div>
 
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">Ordenes</li>
-      </ol>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-custom">
+      <div class="breadcrumb-item">
+        <a th:href="@{/admin}">🏠 Home</a>
+      </div>
+      <div class="breadcrumb-item active">Órdenes</div>
+    </nav>
 
-      <!-- Blog Post -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="row">
-           <div class="col-lg-12">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">No. de Orden</th>
-                  <th scope="col">Fecha</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="orden:${ordenes}">
-                  <td th:text="${orden.numero}"></td>
-                  <td th:text="${orden.fechaCreacion}"></td>
-                  <td th:text="${orden.total}"></td>
-                  <td><a th:href="@{/administrador/detalle/{id} (id=${orden.id})}" class="btn btn-success">Ver Detalle</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <h4>Total Órdenes</h4>
+          <p th:text="${ordenes.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <h4>Valor Total</h4>
+          <p th:text="'€' + ${#aggregates.sum(ordenes.![total])}">$0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✓</div>
+        <div class="stat-content">
+          <h4>Completadas</h4>
+          <p th:text="${ordenes.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-content">
+          <h4>Hoy</h4>
+          <p>0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por número de orden..." onkeyup="filterTable()">
+      </div>
+      <select class="filter-select">
+        <option>Todas las órdenes</option>
+        <option>Completadas</option>
+        <option>Pendientes</option>
+        <option>Enviadas</option>
+      </select>
+      <select class="filter-select">
+        <option>Esta semana</option>
+        <option>Este mes</option>
+        <option>Este año</option>
+        <option>Todo el tiempo</option>
+      </select>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>
+          <span>📋</span>
+          <span>Lista de Órdenes</span>
+        </h2>
+        <span class="table-count" th:text="${ordenes.size()} + ' órdenes'">0 órdenes</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="orders-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>No. de Orden</th>
+              <th>Fecha</th>
+              <th>Valor</th>
+              <th>Estado</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="orden:${ordenes}" class="order-row">
+              <td>
+                <div class="order-number">
+                  <span class="order-badge" th:text="'#' + ${orden.numero}">#12345</span>
+                </div>
+              </td>
+              <td>
+                <div class="order-date">
+                  <span>📅</span>
+                  <span th:text="${orden.fechaCreacion}">01/01/2024</span>
+                </div>
+              </td>
+              <td>
+                <div class="order-total" th:text="'€' + ${orden.total}">$0.00</div>
+              </td>
+              <td>
+                <div class="order-status status-completed">
+                  <span>✓</span>
+                  <span>Completada</span>
+                </div>
+              </td>
+              <td>
+                <a th:href="@{/administrador/detalle/{id} (id=${orden.id})}" class="btn-view">
+                  👁️ Ver Detalle
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div th:if="${ordenes.empty}" class="empty-state">
+          <div class="empty-icon">📦</div>
+          <h3>No hay órdenes registradas</h3>
+          <p>Las nuevas órdenes aparecerán aquí cuando los clientes realicen compras</p>
+        </div>
+      </div>
+
+      <div class="pagination-wrapper" th:if="${!ordenes.empty}">
+        <div class="pagination-info">
+          Mostrando <strong th:text="${ordenes.size()}">0</strong> órdenes
         </div>
       </div>
     </div>
   </div>
-  <!-- /.container -->
 
-  	<!-- Footer -->
-  	<div th:include="administrador/template_admin.html::footer"></div>
+  <!-- Footer -->
+  <div th:include="administrador/template_admin.html::footer"></div>
 
-     <!-- Bootstrap core JavaScript -->
-     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
+  <script>
+    // Search/Filter functionality
+    function filterTable() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toUpperCase();
+      const table = document.getElementById('ordersTable');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < rows.length; i++) {
+        const orderCell = rows[i].getElementsByTagName('td')[0];
+        if (orderCell) {
+          const txtValue = orderCell.textContent || orderCell.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            rows[i].style.display = '';
+          } else {
+            rows[i].style.display = 'none';
+          }
+        }
+      }
+    }
+  </script>
 </body>
-
 </html>

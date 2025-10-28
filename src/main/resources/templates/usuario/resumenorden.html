@@ -1,84 +1,182 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Spring eCommerce</title>
+  <title>Resumen de Orden - MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <link th:href="@{/css/usuario/resumenorden.css}" rel="stylesheet">
+
 </head>
 
 <body>
-
   <!-- Navigation -->
   <div th:insert="~{usuario/template_usuario.html::header}"></div>
 
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">
+        <span>📋</span>
+        <span>Resumen de la Orden</span>
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+          <li class="breadcrumb-item active">Resumen de Orden</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
   <!-- Page Content -->
-  <div class="container">
+  <div class="container main-container">
+    <!-- Progress Steps -->
+    <div class="progress-steps">
+      <div class="steps-container">
+        <div class="step completed">
+          <div class="step-icon">✓</div>
+          <span class="step-label">Carrito</span>
+        </div>
+        <div class="step active">
+          <div class="step-icon">📋</div>
+          <span class="step-label">Resumen</span>
+        </div>
+        <div class="step">
+          <div class="step-icon">✓</div>
+          <span class="step-label">Confirmación</span>
+        </div>
+      </div>
+    </div>
 
-    <h1 class="mt-4 mb-3">
-      Spring eCommerce <small>Resumen de la orden</small>
-    </h1>
-
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-      <li class="breadcrumb-item active">Orden</li>
-    </ol>
-
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="row">
-
-          <!-- Datos de la orden -->
-          <div class="col-lg-9">
-            <div class="card-body">
-              <h5 class="card-title">DATOS ORDEN</h5>
-              <h6 th:text=" 'Nombre: ' + ${usuario.nombre}"></h6>
-              <h6 th:text=" 'Correo: ' + ${usuario.email}"></h6>
-              <h6 th:text=" 'Dirección: ' + ${usuario.direccion}"></h6>
-
-              <h5 class="card-title mt-4">PRODUCTOS</h5>
-
-              <div class="alert alert-light" role="alert">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Producto</th>
-                      <th scope="col">Precio</th>
-                      <th scope="col">Cantidad</th>
-                      <th scope="col">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr th:each="dorden : ${cart}">
-                      <td th:text="${dorden.nombre}"></td>
-                      <td th:text="${dorden.precio}"></td>
-                      <td th:text="${dorden.cantidad}"></td>
-                      <td th:text="${dorden.total}"></td>
-                    </tr>
-                  </tbody>
-                </table>
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Order Card -->
+        <div class="order-card">
+          <!-- User Information -->
+          <div class="order-section">
+            <div class="section-header">
+              <div class="section-icon">👤</div>
+              <h3 class="section-title">Datos del Cliente</h3>
+            </div>
+            <div class="user-info-grid">
+              <div class="info-card">
+                <div class="info-icon-wrapper">📝</div>
+                <div class="info-label">Nombre</div>
+                <div class="info-value" th:text="${usuario.nombre}">Juan Pérez</div>
+              </div>
+              <div class="info-card">
+                <div class="info-icon-wrapper">📧</div>
+                <div class="info-label">Correo</div>
+                <div class="info-value" th:text="${usuario.email}">juan@email.com</div>
+              </div>
+              <div class="info-card">
+                <div class="info-icon-wrapper">📍</div>
+                <div class="info-label">Dirección</div>
+                <div class="info-value" th:text="${usuario.direccion}">Calle Principal 123</div>
               </div>
             </div>
           </div>
 
-          <!-- Resumen -->
-          <div class="col-lg-3">
-            <h2 class="card-title">Resumen Orden</h2>
-            <ul class="list-group">
-              <li class="list-group-item">
-                <h5 th:text="'Total: ' + ${orden.total}">Total:</h5>
-              </li>
-              <a th:href="@{saveOrder}" class="btn btn-dark mt-3">Generar</a>
-            </ul>
+          <!-- Products Information -->
+          <div class="order-section">
+            <div class="section-header">
+              <div class="section-icon">🛍️</div>
+              <h3 class="section-title">Productos en la Orden</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="products-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="dorden : ${cart}" class="product-item">
+                    <td>
+                      <div class="product-info">
+                        <img src="https://via.placeholder.com/60" alt="Producto" class="product-image">
+                        <div class="product-name" th:text="${dorden.nombre}">Producto</div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="product-price" th:text="'€' + ${dorden.precio}">$50.00</div>
+                    </td>
+                    <td>
+                      <div class="product-quantity" th:text="${dorden.cantidad}">2</div>
+                    </td>
+                    <td>
+                      <div class="product-total" th:text="'€' + ${dorden.total}">$100.00</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+        </div>
+      </div>
 
+      <div class="col-lg-4">
+        <!-- Order Summary -->
+        <div class="order-card">
+          <div class="order-section">
+            <div class="section-header">
+              <div class="section-icon">💰</div>
+              <h3 class="section-title">Resumen</h3>
+            </div>
+            
+            <div class="summary-section">
+              <div class="summary-rows">
+                <div class="summary-row">
+                  <span class="summary-label">Subtotal</span>
+                  <span class="summary-value" th:text="'€' + ${orden.total}">$250.00</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-label">Envío</span>
+                  <span class="summary-value" style="color: var(--success);">GRATIS</span>
+                </div>
+                <div class="summary-row">
+                  <span class="summary-label">IVA (incluido)</span>
+                  <span class="summary-value">$0.00</span>
+                </div>
+                <div class="summary-row total-row">
+                  <span class="total-label">Total</span>
+                  <span class="total-value" th:text="'€' + ${orden.total}">$250.00</span>
+                </div>
+              </div>
+              
+              <a th:href="@{saveOrder}" class="btn-confirm">
+                ✓ Confirmar y Generar Orden
+              </a>
+              
+              <div class="security-badges">
+                <div class="security-badge">
+                  <div class="security-icon">🔒</div>
+                  <span>Pago Seguro</span>
+                </div>
+                <div class="security-badge">
+                  <div class="security-icon">🚚</div>
+                  <span>Envío Gratis</span>
+                </div>
+                <div class="security-badge">
+                  <div class="security-icon">↩️</div>
+                  <span>30 Días Devolución</span>
+                </div>
+                <div class="security-badge">
+                  <div class="security-icon">✓</div>
+                  <span>Garantía Total</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

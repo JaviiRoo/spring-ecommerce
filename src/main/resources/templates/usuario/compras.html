@@ -1,82 +1,161 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
-  <title>Spring eCommerce</title>
-
+  <title>Mis Compras - MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
-   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
-   <!-- Custom styles for this template -->
-   <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/usuario/compras.css}" rel="stylesheet">
 
 </head>
 
 <body>
-
   <!-- Navigation -->
   <div th:insert="~{usuario/template_usuario.html::header}" th:if="${sesion==null}"></div>
   <div th:insert="~{usuario/template_usuario.html::header-user}" th:unless="${sesion==null}"></div>
 
-
-    <!-- Page Content -->
+  <!-- Page Header -->
+  <div class="page-header">
     <div class="container">
-
-
-      <!-- Page Heading/Breadcrumbs -->
-      <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Compras</small>
+      <h1 class="page-title">
+        <span>📦</span>
+        <span>Mis Compras</span>
       </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+          <li class="breadcrumb-item active">Mis Compras</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
 
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-        <li class="breadcrumb-item active">Compras</li>
-      </ol>
+  <!-- Page Content -->
+  <div class="container main-container">
+    <!-- Stats Grid -->
+    <div class="stats-grid" th:if="${ordenes != null and !ordenes.empty}">
+      <div class="stat-card">
+        <div class="stat-icon orange">📊</div>
+        <div class="stat-content">
+          <h4>Total Órdenes</h4>
+          <p th:text="${ordenes.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">💰</div>
+        <div class="stat-content">
+          <h4>Total Gastado</h4>
+          <p th:text="'€' + ${#aggregates.sum(ordenes.![total])}">$0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">✓</div>
+        <div class="stat-content">
+          <h4>Completadas</h4>
+          <p th:text="${ordenes.size()}">0</p>
+        </div>
+      </div>
+    </div>
 
-      <!-- Blog Post -->
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="row">
-           <div class="col-lg-12">
-            <table class="table">
+    <!-- Filter Bar -->
+    <div class="filter-bar" th:if="${ordenes != null and !ordenes.empty}">
+      <div class="filter-group">
+        <span class="filter-label">Mostrar:</span>
+        <select class="filter-select">
+          <option>Todas las órdenes</option>
+          <option>Últimos 30 días</option>
+          <option>Últimos 3 meses</option>
+          <option>Este año</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Estado:</span>
+        <select class="filter-select">
+          <option>Todos</option>
+          <option>Completado</option>
+          <option>En proceso</option>
+          <option>Enviado</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Orders Card -->
+    <div class="orders-card">
+      <div class="orders-header">
+        <div class="orders-header-left">
+          <div class="orders-header-icon">🛍️</div>
+          <h3>Historial de Pedidos</h3>
+        </div>
+        <div class="orders-count" th:if="${ordenes != null and !ordenes.empty}" th:text="${ordenes.size()} + ' pedidos'"></div>
+      </div>
+      <div class="card-body">
+        <div th:if="${ordenes != null and !ordenes.empty}">
+          <div class="table-responsive">
+            <table class="orders-table">
               <thead>
                 <tr>
-                  <th scope="col">No. de Orden</th>
-                  <th scope="col">Fecha</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Acción</th>
+                  <th>No. de Orden</th>
+                  <th>Fecha</th>
+                  <th>Valor</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="orden: ${ordenes}">
-                  <td th:text="${orden.numero}"></td>
-                  <td th:text="${orden.fechaCreacion}"></td>
-                  <td th:text="${orden.total}"></td>
-                  <td><a th:href="@{/usuario/detalle/{id}(id=${orden.id})}" class="btn btn-success">Ver Detalle</a></td>
+                <tr th:each="orden: ${ordenes}" class="order-item">
+                  <td>
+                    <div class="order-number">
+                      <span class="order-badge">#</span>
+                      <span th:text="${orden.numero}"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="order-date">
+                      <span>📅</span>
+                      <span th:text="${orden.fechaCreacion}"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="order-total" th:text="'€' + ${orden.total}"></div>
+                  </td>
+                  <td>
+                    <span class="status-badge status-completed">
+                      <span>✓</span>
+                      <span>Completado</span>
+                    </span>
+                  </td>
+                  <td>
+                    <a th:href="@{/usuario/detalle/{id}(id=${orden.id})}" class="btn-view">
+                      👁️ Ver Detalle
+                    </a>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+        <div th:if="${ordenes == null or ordenes.empty}" class="empty-orders">
+          <div class="empty-orders-icon">🛒</div>
+          <h4>Aún no tienes compras</h4>
+          <p>Cuando realices tu primera compra, aparecerá aquí tu historial de pedidos</p>
+          <a th:href="@{/}" class="btn-primary">
+            🏪 Comenzar a Comprar
+          </a>
+        </div>
       </div>
     </div>
   </div>
-  <!-- /.container -->
 
   <!-- Footer -->
-   <div th:insert="~{usuario/template_usuario.html::footer}"></div>
+  <div th:insert="~{usuario/template_usuario.html::footer}"></div>
 
-   <!-- Bootstrap core JavaScript -->
-   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
-
 </html>

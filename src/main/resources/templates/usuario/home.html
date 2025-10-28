@@ -1,53 +1,132 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>Comercio Digital</title>
+  <title>MarketPlace - Tu Tienda Online</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
   <!-- Custom styles for this template -->
-  <link th:href="@{css/heroic-features.css}" rel="stylesheet">
+  <link th:href="@{css/usuario/home.css}" rel="stylesheet">
+
 </head>
 
 <body>
-
   <!-- Navigation -->
   <div th:insert="~{usuario/template_usuario.html::header}" th:if="${sesion==null}"></div>
   <div th:insert="~{usuario/template_usuario.html::header-user}" th:unless="${sesion==null}"></div>
 
-  <!-- Page Content -->
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-badge">
+        ✨ Tu destino de compras favorito
+      </div>
+      <h1 class="hero-title">Bienvenido a<br>MarketPlace</h1>
+      <p class="hero-subtitle">Descubre productos increíbles con la mejor calidad y los precios más competitivos del mercado</p>
+      <div class="hero-buttons">
+        <a href="#productos" class="btn-hero btn-hero-primary">
+          🛍️ Ver Productos
+        </a>
+        <a href="#features" class="btn-hero btn-hero-secondary">
+          ✨ Nuestras Ventajas
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="container features-section" id="features">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🚚</div>
+        <h3>Envío Gratis</h3>
+        <p>Disfruta de envío gratuito en todos tus pedidos sin mínimo de compra</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <h3>Pago Seguro</h3>
+        <p>Transacciones 100% seguras con encriptación de última generación</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Entrega Rápida</h3>
+        <p>Recibe tus productos en tiempo récord con nuestro sistema express</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎁</div>
+        <h3>Ofertas Únicas</h3>
+        <p>Accede a promociones exclusivas y descuentos especiales cada día</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
   <div class="container">
+    <div class="stats-bar">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">10,000+</div>
+          <div class="stat-label">Productos</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50,000+</div>
+          <div class="stat-label">Clientes Felices</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Soporte</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Satisfacción</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Jumbotron Header -->
-    <header class="jumbotron my-4">
-      <h1 class="display-3">Bienvenido a Spring Ecommerce 2021</h1>
-      <p class="lead">Tu tienda de productos en Línea</p>
-    </header>
-
-    <!-- Page Features -->
-    <div class="row text-center">
-      <div class="col-lg-3 col-md-6 mb-4" th:each="producto: ${productos}">
-        <div class="card h-100">
-          <img class="card-img-top" th:src="@{/images/{img} (img=${producto.imagen})}" alt="">
-          <div class="card-body">
-            <p class="card-text" th:text="${producto.nombre}"></p>
+  <!-- Products Section -->
+  <div class="container products-section" id="productos">
+    <div class="section-header">
+      <div class="section-badge">⭐ Destacados</div>
+      <h2 class="section-title">Productos Destacados</h2>
+      <p class="section-subtitle">Explora nuestra selección de productos más populares y mejor valorados</p>
+    </div>
+    
+    <div class="row">
+      <div th:each="producto: ${productos}" class="col-lg-3 col-md-6 mb-4">
+        <div class="product-card">
+          <div class="product-image-wrapper">
+            <img class="product-image" th:src="@{/images/{img} (img=${producto.imagen})}" alt="Producto">
+            <div class="product-badge">Nuevo</div>
           </div>
-          <div class="card-footer">
-            <a th:href="@{/productohome/{id}(id=${producto.id})}" class="btn btn-success">Ver producto</a>
+          <div class="product-body">
+            <h5 class="product-name" th:text="${producto.nombre}">Nombre del Producto</h5>
+            <p class="product-description">Descripción breve del producto que captura la atención del cliente</p>
+          </div>
+          <div class="product-footer">
+            <a th:href="@{/productohome/{id}(id=${producto.id})}" class="btn-view-product">
+              🛒 Ver Producto
+            </a>
           </div>
         </div>
       </div>
     </div>
-    <!-- /.row -->
-
+    
+    <div th:if="${productos == null or productos.empty}" class="no-products">
+      <div class="no-products-icon">📦</div>
+      <h4>No hay productos disponibles</h4>
+      <p>Estamos trabajando para traerte los mejores productos. ¡Vuelve pronto para descubrir nuestras novedades!</p>
+    </div>
   </div>
-  <!-- /.container -->
 
   <!-- Footer -->
   <div th:insert="~{usuario/template_usuario.html::footer}"></div>
@@ -55,6 +134,5 @@
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{vendor/jquery/jquery.min.js}"></script>
   <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
 </body>
 </html>

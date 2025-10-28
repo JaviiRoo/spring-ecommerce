@@ -1,71 +1,174 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <title>Usuarios - Admin MarketPlace</title>
 
-  <title>Spring eCommerce</title>
-
-
-   <!-- Bootstrap core CSS -->
-   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
-   <!-- Custom styles for this template -->
-   <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/administrador/usuarios.css}" rel="stylesheet">
 
 </head>
 
 <body>
+  <!-- Navigation -->
+  <div th:include="administrador/template_admin.html::header"></div>
 
-	<!-- Navigation -->
-	  <div th:include="administrador/template_admin.html::header"></div>
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>
+        <span>👥</span>
+        <span>Gestión de Usuarios</span>
+      </h1>
+      <p class="page-subtitle">Administra todos los usuarios registrados en la plataforma</p>
+    </div>
 
-<!-- Page Content -->
-<div class="container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-custom">
+      <div class="breadcrumb-item">
+        <a th:href="@{/admin}">🏠 Home</a>
+      </div>
+      <div class="breadcrumb-item active">Usuarios</div>
+    </nav>
 
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h4>Total Usuarios</h4>
+          <p th:text="${usuarios.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✓</div>
+        <div class="stat-content">
+          <h4>Activos</h4>
+          <p th:text="${usuarios.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <h4>Este Mes</h4>
+          <p>+12</p>
+        </div>
+      </div>
+    </div>
 
-  <!-- Page Heading/Breadcrumbs -->
-  <h1 class="mt-4 mb-3">
-    Spring eCommerce <small>Usuarios</small>
-  </h1>
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar usuarios por nombre, email o dirección..." onkeyup="filterTable()">
+      </div>
+    </div>
 
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-    <li class="breadcrumb-item active">Ver Usuarios</li>
-  </ol>
-  <h2>Usuarios</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Email</th>
-        <th scope="col">Dirección</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="usuario:${usuarios}">
-        <td th:text="${usuario.nombre}"></td>
-        <td th:text="${usuario.email}"></td>
-        <td th:text="${usuario.direccion}"></td>
-      </tr>       
-    </tbody>
-  </table>
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>
+          <span>📋</span>
+          <span>Lista de Usuarios</span>
+        </h2>
+        <span class="table-count" th:text="${usuarios.size()} + ' usuarios'">0 usuarios</span>
+      </div>
 
-</div>
-<!-- /.container -->
+      <div class="table-wrapper">
+        <table class="users-table" id="usersTable">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Dirección</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="usuario:${usuarios}" class="user-row">
+              <td>
+                <div class="user-info">
+                  <div class="user-avatar" th:text="${usuario.nombre.substring(0,1).toUpperCase()}">U</div>
+                  <div class="user-details">
+                    <div class="user-name" th:text="${usuario.nombre}">Usuario</div>
+                    <div class="user-role">
+                      <span class="role-badge">👤 Cliente</span>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="user-email">
+                  <span>📧</span>
+                  <span th:text="${usuario.email}">email@ejemplo.com</span>
+                </div>
+              </td>
+              <td>
+                <div class="user-address" th:text="${usuario.direccion}" th:title="${usuario.direccion}">
+                  📍 Dirección
+                </div>
+              </td>
+              <td>
+                <div class="status-badge">
+                  <span class="status-dot"></span>
+                  <span>Activo</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-	<!-- Footer -->
-  
-	<div th:include="administrador/template_admin.html::footer"></div>
+        <div th:if="${usuarios.empty}" class="empty-state">
+          <div class="empty-icon">👥</div>
+          <h3>No hay usuarios registrados</h3>
+          <p>Los nuevos usuarios aparecerán aquí cuando se registren</p>
+        </div>
+      </div>
 
-   <!-- Bootstrap core JavaScript -->
-   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+      <div class="pagination-wrapper" th:if="${!usuarios.empty}">
+        <div class="pagination-info">
+          Mostrando <strong th:text="${usuarios.size()}">0</strong> usuarios
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Footer -->
+  <div th:include="administrador/template_admin.html::footer"></div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <script>
+    // Search/Filter functionality
+    function filterTable() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toUpperCase();
+      const table = document.getElementById('usersTable');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName('td');
+        let found = false;
+        
+        for (let j = 0; j < cells.length - 1; j++) {
+          const txtValue = cells[j].textContent || cells[j].innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            found = true;
+            break;
+          }
+        }
+        
+        rows[i].style.display = found ? '' : 'none';
+      }
+    }
+  </script>
 </body>
-
 </html>

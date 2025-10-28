@@ -1,109 +1,267 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <title>Crear Producto - Admin MarketPlace</title>
 
-  <title>Spring eCommerce</title>
-
-
-  	<!-- Bootstrap core CSS -->
-    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/productos/create.css}" rel="stylesheet">
 
 </head>
 
 <body>
+  <!-- Navigation -->
+  <div th:include="administrador/template_admin.html::header"></div>
 
-<!-- Navigation -->
-<div th:include="administrador/template_admin.html::header"></div>
-
-<!-- Page Content -->
-<div class="container">
-
-
-  <!-- Page Heading/Breadcrumbs -->
-  <h1 class="mt-4 mb-3">
-    Spring eCommerce <small>Productos</small>
-  </h1>
-
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-    <li class="breadcrumb-item active">Crear Productos</li>
-  </ol>
-
-  <h2>Crear Producto</h2>
-  <form class="form-horizontal" th:action="@{/productos/save}" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="nombre">Nombre:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="nombre" name="nombre"
-        placeholder="Ingrese el nombre del producto" autocomplete="off" required>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="descripcion">Descripción:</label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="descripcion" name="descripcion"
-        placeholder="Ingrese la descripcion del producto" required
-        autocomplete="off"> </textarea>
-      </div>
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">
+        <span>➕</span>
+        <span>Crear Producto</span>
+      </h1>
+      <p class="page-subtitle">Agrega un nuevo producto al catálogo de MarketPlace</p>
     </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="cantidad">Cantidad:</label>
-      <div class="col-sm-10">
-        <input type="number" class="form-control" id="cantidad"
-        name="cantidad" placeholder="Ingrese la cantidad del producto"
-        required autocomplete="off">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-custom">
+      <div class="breadcrumb-item">
+        <a href="/admin">🏠 Home</a>
       </div>
-    </div>
+      <div class="breadcrumb-item">
+        <a href="/productos">📦 Productos</a>
+      </div>
+      <div class="breadcrumb-item active">Crear Producto</div>
+    </nav>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="precio">Precio:</label>
-      <div class="col-sm-10">
-        <input type="number" class="form-control" step="any" id="precio" name="precio"
-        placeholder="Ingrese el precio del producto" autocomplete="off" required>
+    <!-- Info Cards -->
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="info-icon">📝</div>
+        <div class="info-content">
+          <h4>Paso</h4>
+          <p>1 de 1</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">✓</div>
+        <div class="info-content">
+          <h4>Campos</h4>
+          <p>5 Requeridos</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">⚡</div>
+        <div class="info-content">
+          <h4>Estado</h4>
+          <p>Borrador</p>
+        </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="img">Imagen:</label>
-      <div class="col-sm-10">
-        <input type="file" class="form-control-file" id="img" name="img">
+    <!-- Form Card -->
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-header-icon">📦</div>
+        <div class="form-header-content">
+          <h2>Información del Producto</h2>
+          <p>Complete todos los campos para agregar el producto</p>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <form th:action="@{/productos/save}" method="post" enctype="multipart/form-data">
+          
+          <!-- Basic Information Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <span class="section-icon">📋</span>
+              Información Básica
+            </h3>
+            
+            <div class="form-group">
+              <label class="form-label" for="nombre">
+                Nombre del Producto
+                <span class="required-badge">REQUERIDO</span>
+              </label>
+              <input type="text" 
+                     class="form-control-custom" 
+                     id="nombre" 
+                     name="nombre"
+                     placeholder="Ej: Smartphone Samsung Galaxy S24"
+                     autocomplete="off" 
+                     required>
+              <div class="help-text">
+                <span class="help-icon">i</span>
+                <span>Ingrese un nombre claro y descriptivo para el producto</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="descripcion">
+                Descripción
+                <span class="required-badge">REQUERIDO</span>
+              </label>
+              <textarea class="form-control-custom" 
+                        id="descripcion" 
+                        name="descripcion"
+                        placeholder="Describa las características principales, materiales, dimensiones y beneficios del producto..."
+                        required
+                        autocomplete="off"></textarea>
+              <div class="help-text">
+                <span class="help-icon">i</span>
+                <span>Proporcione detalles que ayuden a los clientes a tomar su decisión</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inventory Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <span class="section-icon">📊</span>
+              Inventario y Precio
+            </h3>
+            
+            <div class="input-grid">
+              <div class="form-group">
+                <label class="form-label" for="cantidad">
+                  Cantidad en Stock
+                  <span class="required-badge">REQUERIDO</span>
+                </label>
+                <input type="number" 
+                       class="form-control-custom" 
+                       id="cantidad"
+                       name="cantidad" 
+                       placeholder="100"
+                       min="0"
+                       required 
+                       autocomplete="off">
+                <div class="help-text">
+                  <span class="help-icon">i</span>
+                  <span>Unidades disponibles en inventario</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="precio">
+                  Precio (USD)
+                  <span class="required-badge">REQUERIDO</span>
+                </label>
+                <input type="number" 
+                       class="form-control-custom" 
+                       step="0.01" 
+                       id="precio" 
+                       name="precio"
+                       placeholder="99.99"
+                       min="0"
+                       autocomplete="off" 
+                       required>
+                <div class="help-text">
+                  <span class="help-icon">i</span>
+                  <span>Precio de venta del producto</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Section -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <span class="section-icon">🖼️</span>
+              Imagen del Producto
+            </h3>
+            
+            <div class="form-group">
+              <label class="form-label" for="img">
+                Imagen Principal
+              </label>
+              <div class="file-upload-wrapper" id="fileUploadWrapper">
+                <div class="file-upload-icon">📸</div>
+                <div class="file-upload-text">Arrastra una imagen aquí o haz clic para seleccionar</div>
+                <div class="file-upload-hint">Formatos soportados: JPG, PNG, WEBP (Máx. 5MB)</div>
+                <input type="file" 
+                       class="file-input" 
+                       id="img" 
+                       name="img"
+                       accept="image/*"
+                       onchange="displayFileName(this)">
+                <div class="file-name" id="fileName"></div>
+              </div>
+              <div class="help-text">
+                <span class="help-icon">i</span>
+                <span>Usa una imagen de alta calidad para atraer más clientes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="submit" class="btn-custom btn-primary">
+              💾 Guardar Producto
+            </button>
+            <a href="/productos" class="btn-custom btn-secondary">
+              ✕ Cancelar
+            </a>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-sm-2">
-        <button type="submit" class="btn btn-success">
-          <span class="glyphicon glyphicon-saved"></span> Guardar
-        </button>
-      </div>
-    </div>
+  <!-- Footer -->
+  <div th:include="administrador/template_admin.html::footer"></div>
 
-  </form>
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-</div>
+  <script>
+    // Display selected file name
+    function displayFileName(input) {
+      const fileName = document.getElementById('fileName');
+      if (input.files && input.files[0]) {
+        fileName.textContent = '✓ ' + input.files[0].name;
+        fileName.classList.add('show');
+      }
+    }
 
-<!-- /.container -->
+    // Drag and drop functionality
+    const fileUploadWrapper = document.getElementById('fileUploadWrapper');
+    const fileInput = document.getElementById('img');
 
-<!-- Footer -->
-<div th:include="administrador/template_admin.html::footer"></div>
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      fileUploadWrapper.addEventListener(eventName, preventDefaults, false);
+    });
 
-<!-- Bootstrap core JavaScript -->
-   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
+    ['dragenter', 'dragover'].forEach(eventName => {
+      fileUploadWrapper.addEventListener(eventName, () => {
+        fileUploadWrapper.classList.add('dragover');
+      }, false);
+    });
 
+    ['dragleave', 'drop'].forEach(eventName => {
+      fileUploadWrapper.addEventListener(eventName, () => {
+        fileUploadWrapper.classList.remove('dragover');
+      }, false);
+    });
 
-
+    fileUploadWrapper.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      fileInput.files = files;
+      displayFileName(fileInput);
+    }, false);
+  </script>
 </body>
-
 </html>

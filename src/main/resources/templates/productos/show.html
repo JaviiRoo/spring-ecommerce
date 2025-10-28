@@ -1,77 +1,180 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
-  <title>Spring eCommerce</title>
-
+  <title>Productos - Admin MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
-  <link th:href="@{vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link th:href="@{css/heroic-features.css}" rel="stylesheet">
+  <link th:href="@{/css/productos/show.css}" rel="stylesheet">
 
 </head>
 
 <body>
-
   <!-- Navigation -->
   <div th:include="administrador/template_admin.html::header"></div>
-</nav>
 
-<!-- Page Content -->
-<div class="container">
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1>
+          <span>📦</span>
+          <span>Gestión de Productos</span>
+        </h1>
+        <p class="page-subtitle">Administra el catálogo completo de productos de MarketPlace</p>
+      </div>
+    </div>
 
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-custom">
+      <div class="breadcrumb-item">
+        <a href="/admin">🏠 Home</a>
+      </div>
+      <div class="breadcrumb-item active">Productos</div>
+    </nav>
 
-  <!-- Page Heading/Breadcrumbs -->
-  <h1 class="mt-4 mb-3">
-    Spring eCommerce <small>Productos</small>
-  </h1>
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <h4>Total Productos</h4>
+          <p th:text="${productos.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✓</div>
+        <div class="stat-content">
+          <h4>Disponibles</h4>
+          <p th:text="${productos.size()}">0</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <h4>Valor Total</h4>
+          <p th:text="'$' + ${#aggregates.sum(productos.![precio * cantidad])}">$0</p>
+        </div>
+      </div>
+    </div>
 
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-    <li class="breadcrumb-item active">Ver Productos</li>
-  </ol>
+    <!-- Actions Bar -->
+    <div class="actions-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos por nombre..." onkeyup="filterTable()">
+      </div>
+      <a th:href="@{/productos/create}" class="btn-create">
+        ➕ Crear Producto
+      </a>
+    </div>
 
-  <a class="btn btn-primary" th:href="@{/productos/create}" > Crear Producto</a>
-  <h2>Productos</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Inventario</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Acción</th>
-        <th scope="col">Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="producto:${productos}">
-        <td th:text="${producto.nombre}" ></td>
-        <td th:text="${producto.descripcion}"></td>
-        <td th:text="${producto.cantidad}" ></td>
-        <td th:text="${producto.precio}"></td>
-        <td><a  class="btn btn-warning" th:href="@{productos/edit/{id} (id=${producto.id}) }">Editar</a> </td>
-        <td><a  class="btn btn-danger"  th:href="@{productos/delete/{id} (id=${producto.id}) }">Eliminar</a> </td>
-      </tr>       
-    </tbody>
-  </table>
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header">
+        <h2>
+          <span>📋</span>
+          <span>Lista de Productos</span>
+        </h2>
+        <span class="table-count" th:text="${productos.size()} + ' productos'">0 productos</span>
+      </div>
 
-</div>
-<!-- /.container -->
+      <div class="table-wrapper">
+        <table class="products-table" id="productsTable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Stock</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="producto:${productos}" class="product-row">
+              <td>
+                <div class="product-name" th:text="${producto.nombre}">Producto</div>
+              </td>
+              <td>
+                <div class="product-description" th:text="${producto.descripcion}" title="${producto.descripcion}">Descripción</div>
+              </td>
+              <td>
+                <div class="product-stock">
+                  <span>📦</span>
+                  <span th:text="${producto.cantidad}">0</span>
+                </div>
+              </td>
+              <td>
+                <div class="product-price" th:text="'$' + ${producto.precio}">$0.00</div>
+              </td>
+              <td>
+                <div class="actions-cell">
+                  <a class="btn-action btn-edit" th:href="@{/productos/edit/{id} (id=${producto.id})}">
+                    ✏️ Editar
+                  </a>
+                  <a class="btn-action btn-delete" th:href="@{/productos/delete/{id} (id=${producto.id})}" onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                    🗑️ Eliminar
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-<div th:include="administrador/template_admin.html::footer"></div>
+        <div th:if="${productos.empty}" class="empty-state">
+          <div class="empty-icon">📦</div>
+          <h3>No hay productos registrados</h3>
+          <p>Comienza agregando tu primer producto al catálogo</p>
+          <a th:href="@{/productos/create}" class="btn-create">
+            ➕ Crear Primer Producto
+          </a>
+        </div>
+      </div>
 
-<!-- Bootstrap core JavaScript -->
-   <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-   <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+      <div class="pagination-wrapper" th:if="${!productos.empty}">
+        <div class="pagination-info">
+          Mostrando <strong th:text="${productos.size()}">0</strong> productos
+        </div>
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div th:include="administrador/template_admin.html::footer"></div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  <script>
+    // Search/Filter functionality
+    function filterTable() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toUpperCase();
+      const table = document.getElementById('productsTable');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < rows.length; i++) {
+        const nameCell = rows[i].getElementsByTagName('td')[0];
+        if (nameCell) {
+          const txtValue = nameCell.textContent || nameCell.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            rows[i].style.display = '';
+          } else {
+            rows[i].style.display = 'none';
+          }
+        }
+      }
+    }
+  </script>
 </body>
-
 </html>

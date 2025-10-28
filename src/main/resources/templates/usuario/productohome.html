@@ -1,98 +1,174 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Producto - MarketPlace</title>
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
-
-	<title>Spring eCommerce</title>
-
-
-	<!-- Bootstrap core CSS -->
-	<link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link th:href="@{/css/heroic-features.css}" rel="stylesheet">
-
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/usuario/productohome.css}" rel="stylesheet">
+   
 </head>
 
 <body>
+  <!-- Navigation -->
+  <div th:insert="~{usuario/template_usuario.html::header}"></div>
 
-	<!-- Navigation -->
-	<div th:include="usuario/template_usuario.html::header">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">🛍️ Detalles del Producto</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+          <li class="breadcrumb-item active">Producto</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
 
-	</div>
+  <!-- Page Content -->
+  <div class="container main-container">
+    <a th:href="@{/}" class="back-btn">
+      ← Volver al Catálogo
+    </a>
+    
+    <div class="product-card">
+      <div class="row g-0">
+        <!-- Product Image -->
+        <div class="col-lg-6">
+          <div class="product-image-section">
+            <div class="product-image-wrapper">
+              <div class="product-badge">✨ Nuevo</div>
+              <button class="wishlist-btn">❤️</button>
+              <img class="product-image" th:src="@{/images/{img} (img=${producto.imagen})}" alt="Producto">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Product Details -->
+        <div class="col-lg-6">
+          <div class="product-info-section">
+            <h2 class="product-title" th:text="${producto.nombre}">Nombre del Producto</h2>
+            
+            <div class="product-rating">
+              <div class="stars">
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
+                <span>⭐</span>
+              </div>
+              <span class="rating-text">5.0</span>
+              <span class="reviews-count">(234 valoraciones)</span>
+            </div>
+            
+            <div class="price-section">
+              <div class="price-label">Precio</div>
+              <div class="price" th:text="'€' + ${producto.precio}">$99.99</div>
+              <div class="price-note">
+                <span>✓</span>
+                <span>IVA incluido · Envío gratis</span>
+              </div>
+            </div>
+            
+            <ul class="product-details">
+              <li class="detail-item">
+                <div class="detail-icon">📝</div>
+                <div class="detail-content">
+                  <div class="detail-label">Descripción</div>
+                  <div class="detail-value" th:text="${producto.descripcion}">Descripción detallada del producto con todas sus características y beneficios principales.</div>
+                </div>
+              </li>
+              <li class="detail-item">
+                <div class="detail-icon">✓</div>
+                <div class="detail-content">
+                  <div class="detail-label">Disponibilidad</div>
+                  <div class="detail-value">En stock - Envío inmediato</div>
+                </div>
+              </li>
+              <li class="detail-item">
+                <div class="detail-icon">🏆</div>
+                <div class="detail-content">
+                  <div class="detail-label">Garantía</div>
+                  <div class="detail-value">12 meses de garantía oficial del fabricante</div>
+                </div>
+              </li>
+            </ul>
+            
+            <form th:action="@{/cart}" method="POST">
+              <input type="hidden" th:value="${producto.id}" name="id">
+              
+              <div class="quantity-section">
+                <label class="quantity-label">Selecciona la cantidad</label>
+                <div class="quantity-control">
+                  <button type="button" class="quantity-btn" onclick="decreaseQuantity()">−</button>
+                  <input type="number" id="cantidad" name="cantidad" class="quantity-input" 
+                         autocomplete="off" min="1" max="5" value="1" readonly>
+                  <button type="button" class="quantity-btn" onclick="increaseQuantity()">+</button>
+                </div>
+                <div class="stock-info">
+                  <span>📦</span>
+                  <span>Stock disponible: 50 unidades</span>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn-add-cart">
+                🛒 Añadir al Carrito
+              </button>
+            </form>
+            
+            <div class="features-grid">
+              <div class="feature-item">
+                <div class="feature-icon">🚚</div>
+                <span class="feature-text">Envío gratis</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🔒</div>
+                <span class="feature-text">Compra segura</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">↩️</div>
+                <span class="feature-text">Devolución fácil</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <span class="feature-text">Entrega rápida</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<!-- Page Content -->
-	<div class="container">
+  <!-- Footer -->
+  <div th:insert="~{usuario/template_usuario.html::footer}"></div>
 
-
-		<!-- Page Heading/Breadcrumbs -->
-		<h1 class="mt-4 mb-3">
-			Spring eCommerce <small>Producto</small>
-		</h1>
-
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-			<li class="breadcrumb-item active">Producto</li>
-		</ol>
-
-		<!-- Blog Post -->
-		<div class="card mb-4">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-lg-6">
-						<a href="#"> <img class="img-fluid rounded" th:src="@{/images/{img} (img=${producto.imagen}) }" alt="">
-						</a>
-					</div>
-					<div class="col-lg-6">
-						<form th:action="@{/cart}" method="POST">
-							<input type="hidden" th:value="${producto.id}" name = "id">
-							<h2 class="card-title" th:text="${producto.nombre}"></h2>
-
-							<ul class="list-group">
-								<li class="list-group-item">
-									<h5 th:text="'Precio: ' + ${producto.precio}"></h5>
-
-								</li>
-								<li class="list-group-item">
-									<p th:text="'Descripción: ' + ${producto.descripcion}"></p>
-
-								</li>
-								<li class="list-group-item">
-									<h6>
-										Cantidad: <input type="number" id="cantidad" name="cantidad" autocomplete="off"
-											min="1" max="5" value="1">
-									</h6>
-								</li>
-							</ul>
-
-
-							<button type="submit" class="btn btn-dark">Añadir al carrito </button>
-
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-	</div>
-	
-	<!-- /.container -->
-
-	<!-- Footer -->
-	<div th:include="usuario/template_usuario.html::footer">
-
-	</div>
-
-	<!-- Bootstrap core JavaScript -->
-	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-	<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
+  <!-- Bootstrap core JavaScript -->
+  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  
+  <script>
+    function increaseQuantity() {
+      const input = document.getElementById('cantidad');
+      const currentValue = parseInt(input.value);
+      if (currentValue < parseInt(input.max)) {
+        input.value = currentValue + 1;
+      }
+    }
+    
+    function decreaseQuantity() {
+      const input = document.getElementById('cantidad');
+      const currentValue = parseInt(input.value);
+      if (currentValue > parseInt(input.min)) {
+        input.value = currentValue - 1;
+      }
+    }
+  </script>
 </body>
-
 </html>

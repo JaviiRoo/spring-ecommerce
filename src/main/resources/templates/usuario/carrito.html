@@ -1,84 +1,156 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Spring eCommerce</title>
+  <title>Carrito - MarketPlace</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+  <!-- Custom styles -->
+  <link th:href="@{/css/usuario/carrito.css}" rel="stylesheet">
 </head>
 
 <body>
-
   <!-- Navigation -->
   <div th:insert="~{usuario/template_usuario.html::header}" th:if="${sesion==null}"></div>
   <div th:insert="~{usuario/template_usuario.html::header-user}" th:unless="${sesion==null}"></div>
 
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">🛒 Carrito de Compras</h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Inicio</a></li>
+          <li class="breadcrumb-item active">Carrito</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
   <!-- Page Content -->
-  <div class="container">
-
-    <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">
-      Spring eCommerce <small>Carrito</small>
-    </h1>
-
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-      <li class="breadcrumb-item active">Carrito</li>
-    </ol>
-
-    <!-- Cart Table -->
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-lg-9">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Precio</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="dorden : ${cart}">
-                  <td th:text="${dorden.nombre}"></td>
-                  <td th:text="${dorden.precio}"></td>
-                  <td th:text="${dorden.cantidad}"></td>
-                  <td th:text="${dorden.total}"></td>
-                  <td>
-                    <a th:href="@{/delete/cart/{id}(id=${dorden.producto.id})}" class="btn btn-danger">Quitar</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+  <div class="container main-container">
+    <div class="row">
+      <!-- Cart Items -->
+      <div class="col-lg-8">
+        <div class="cart-card">
+          <div class="cart-header">
+            <div class="cart-header-icon">🛍️</div>
+            <h3>Tus Productos</h3>
           </div>
-
-          <div class="col-lg-3">
-            <h2 class="card-title">SUBTOTAL</h2>
-            <ul class="list-group">
-              <li class="list-group-item">
-                <h5 th:text="${orden.total}"></h5>
-              </li>
-              <a th:href="@{/orden}" class="btn btn-dark mt-2">Ver Orden</a>
-            </ul>
+          <div class="cart-body">
+            <div th:if="${cart != null and !cart.empty}">
+              <div class="table-responsive">
+                <table class="cart-table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Precio</th>
+                      <th>Cantidad</th>
+                      <th>Total</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="dorden : ${cart}" class="cart-item">
+                      <td>
+                        <div class="product-info">
+                          <img src="https://via.placeholder.com/80" alt="Producto" class="product-image">
+                          <div class="product-details">
+                            <div class="product-name" th:text="${dorden.nombre}"></div>
+                            <div class="product-description">Producto de calidad</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="product-price" th:text="'€' + ${dorden.precio}"></div>
+                      </td>
+                      <td>
+                        <div class="product-quantity">
+                          <span>×</span>
+                          <span th:text="${dorden.cantidad}"></span>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="product-total" th:text="'€' + ${dorden.total}"></div>
+                      </td>
+                      <td>
+                        <a th:href="@{/delete/cart/{id}(id=${dorden.producto.id})}" class="btn-delete">
+                          🗑️ Eliminar
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div th:if="${cart == null or cart.empty}" class="empty-cart">
+              <div class="empty-cart-icon">🛒</div>
+              <h4>Tu carrito está vacío</h4>
+              <p>Agrega algunos productos increíbles para continuar con tu compra</p>
+              <a th:href="@{/}" class="btn-primary" style="width: auto; display: inline-flex; padding: 1rem 2rem;">
+                🏪 Explorar Productos
+              </a>
+            </div>
           </div>
+        </div>
+      </div>
 
+      <!-- Order Summary -->
+      <div class="col-lg-4" th:if="${cart != null and !cart.empty}">
+        <div class="summary-card">
+          <div class="summary-header">
+            <div class="summary-icon">📊</div>
+            <h3 class="summary-title">Resumen</h3>
+          </div>
+          
+          <div class="summary-row">
+            <span class="summary-label">Productos</span>
+            <span class="summary-value" th:text="${cart.size()} + ' items'"></span>
+          </div>
+          
+          <div class="summary-row">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value" th:text="'€' + ${orden.total}"></span>
+          </div>
+          
+          <div class="summary-row">
+            <span class="summary-label">Envío</span>
+            <span class="summary-value" style="color: var(--success);">GRATIS</span>
+          </div>
+          
+          <div class="summary-row">
+            <span class="summary-label" style="font-size: 1.125rem; font-weight: 700; color: var(--text-primary);">Total</span>
+            <span class="summary-total" th:text="'€' + ${orden.total}"></span>
+          </div>
+          
+          <a th:href="@{/orden}" class="btn-primary">
+            💳 Proceder al Pago
+          </a>
+          
+          <a th:href="@{/}" class="btn-secondary">
+            ← Seguir Comprando
+          </a>
+          
+          <div class="security-badges">
+            <div class="security-badge">
+              <div class="security-icon">✓</div>
+              <span>Pago 100% seguro</span>
+            </div>
+            <div class="security-badge">
+              <div class="security-icon">✓</div>
+              <span>Envío gratuito en todos los pedidos</span>
+            </div>
+            <div class="security-badge">
+              <div class="security-icon">✓</div>
+              <span>Garantía de devolución de 30 días</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
-  <!-- /.container -->
 
   <!-- Footer -->
   <div th:insert="~{usuario/template_usuario.html::footer}"></div>
@@ -86,6 +158,5 @@
   <!-- Bootstrap core JavaScript -->
   <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
   <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
 </body>
 </html>
